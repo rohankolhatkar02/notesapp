@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotesApp</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    
+    
+
+    <link rel="stylesheet" type="text/css" href="login.css">
+
+</head>
+
+<body>
+  <div class="form-container">
+    <h1>Welcome to NotesApp!</h1>
+        <h2>Experience better & faster hassle-free note-taking,
+        <br>powered by MongoDB.</h2>
+    <div id="login-form">
+        <form action="/login" method="POST">
+          <div class="row">
+            <label for="name">Username:</label>
+            <input type="text" name="name" autocomplete="off"  required="true" placeholder="Enter your username">
+          </div>
+          <div class="row">
+            <label for="password">Password:</label>
+            <input type="password" name="password" placeholder="******" required="true">
+          </div>
+          <button type="submit">Login</button>
+          <h5>Dont have an account? Sign up here.</h5>
+          <button id="signup-button" style="font-size: 14px; padding: 8px 12px;">Sign up</button>
+        </form>
+    </div>
+
+    <div id="signup-form" style="display: none;">
+        <form class="register-user-form" method="POST" action="/register">
+          <div class="row">
+            <label for="name">Set Username:</label>
+            <input type="text" id="name" name="name" autocomplete="off" required="true" placeholder="Enter your new username">
+          </div>
+          <div class="row">
+            <label for="password">Set Password:</label>
+            <input type="password" id="password" name="password" placeholder="New password" required="true">
+          </div>
+          <button type="submit">Sign Up</button>
+          <h5>Already have an account? Login here.</h5>
+          <button id="login-button" style="font-size: 14px; padding: 8px 12px;background: rgb(148, 135, 138);">Log in</button>
+        </form>
+    </div>
+ </div>
+    <script>
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+        const loginButton = document.getElementById('login-button');
+        const signupButton = document.getElementById('signup-button');
+
+        loginButton.addEventListener('click', function() {
+            loginForm.style.display = 'block';
+            signupForm.style.display = 'none';
+        });
+
+        signupButton.addEventListener('click', function() {
+            loginForm.style.display = 'none';
+            signupForm.style.display = 'block';
+        });
+    </script>
+
+</body>
+
+</html>
