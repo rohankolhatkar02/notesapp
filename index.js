@@ -4,7 +4,6 @@ var mongoose = require ("mongoose")
 
 const methodOverride = require('method-override');
 
-
 const path = require('path');
 const bcrypt = require('bcrypt');
 
@@ -20,6 +19,7 @@ const moment = require("moment");
 
 const router = express.Router();
 
+
 app.set('view engine', 'ejs');
 
 // app.set('views', path.join(__dirname, 'views'));
@@ -33,6 +33,8 @@ app.use(express.urlencoded({
 app.use(bodyParser.urlencoded({
     extended:true
 }))
+
+app.use(methodOverride('_method'));
 
 mongoose.set('strictQuery',true);
 
@@ -162,23 +164,48 @@ app.get('/devices/:id', (req, res) => {
     });
 });
 
-
-//Update
-app.put('/notes/:id', (req, res) => {
-  const noteId = req.params.id;
-  const updatedNote = {
-    title: req.body.title,
-    content: req.body.content
-  };
-  Note.findByIdAndUpdate(noteId, updatedNote, { new: true }, (err, updatedNote) => {
-    if (err) {
+const getDeviceById = (id) => {
+  return MyModel.findById(id)
+    .then((device) => {
+      if (!device) {
+        throw new Error(`No device found with id ${id}`);
+      }
+      return device;
+    })
+    .catch((err) => {
       console.log(err);
-      res.status(500).send(err);
-    } else {
-      res.send(updatedNote);
-    }
-  });
-});
+      throw new Error('Server error');
+    });
+};
+
+// Render the update form
+app.get('/notes/:id/update', async (req, res) => {
+  try {
+    const device = await MyModel.findById(req.params.id)
+    res.render('update', { device });
+  } catch (err) {
+    console.log(err)
+    res.send('Error')
+  }
+})
+
+// Update a note
+app.post('/notes/:id', async (req, res) => {
+  try {
+    const { title, content } = req.body
+    const note = await MyModel.findById(req.params.id)
+    note.title = title
+    note.content = content
+    await note.save()
+    res.redirect('/notes')
+  } catch (err) {
+    console.log(err)
+    res.send('Error')
+  }
+})
+
+
+
 
 
 // DELETE route for deleting a note
@@ -201,10 +228,20 @@ app.delete('/notes/:id', (req, res) => {
     });
 });
 
+app.get('/update', (req, res) => {
+  res.render('update');
+});
+
+// server.js
+app.get('/update/:id', (req, res) => {
+  const id = req.params.id;
+  // Retrieve the data for the device with the specified ID
+  const device = getDeviceById(id);
+  // Render the update page with the device data pre-filled in the form
+  res.render('update', { device });
+});
 
 
-
-  
 app.listen(4001, '0.0.0.0', () => {
     console.log('Server is listening on port 4001');
   });
