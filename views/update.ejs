@@ -8,9 +8,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
         <style>
-            body {
+
+body {
   font-family: 'Open Sans', sans-serif;
-  background: #dcdcdc;
+  background: #f8f3e8;
   color: #3a3c47;
   line-height: 1.6;
   display: flex;
@@ -24,20 +25,21 @@
 
 h1 {
   font-family: 'Libre Baskerville', serif;
-  margin-top: 48px;
+  margin-top: 10px;
   color: rgb(0, 0, 0);
 }
 
 form {
-  background: #dcdcdc;
-  max-width: 360px;
+  background: #f7f1e5;
+  max-width: 500px;
   width: 100%;
   padding: 58px 44px;
-  border: 1px solid #000000;
+  border: 0px solid #000000;
   border-radius: 20px;
-  box-shadow: 0 0 5px 0 rgba(42, 45, 48, 0.12);
+  box-shadow: 5px 5px 5px 5px rgba(42, 45, 48, 0.12);
   transition: all 0.3s ease;
 }
+
 
 .row {
   display: flex;
@@ -112,14 +114,13 @@ button:hover {
         <h1>Create a new post</h1>
             <div class="row">
               <label for="title">Title:</label>
-              <input type="text" name="title" autocomplete="off" required="true" placeholder="Enter a title for your post">
+              <input type="text" name="title" autocomplete="off" required="true" placeholder="Enter a title for your post" value="<%= device.title %>">
             </div>
             <div class="row">
               <label for="content">Content:</label>
-              <textarea name="content" rows="9" placeholder="Enter the content of your post" required="true"></textarea>
+              <textarea name="content" rows="11" placeholder="Enter the content of your post" required="true"><%= device.text %></textarea>
             </div>
             <button type="submit">Submit</button>
           </form>
-          
     </body>
 </html>

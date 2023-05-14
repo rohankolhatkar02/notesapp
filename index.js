@@ -204,7 +204,25 @@ app.post('/notes/:id', async (req, res) => {
   }
 })
 
+app.put('/notes/:id', async (req, res) => {
+  const { title, content } = req.body;
+  const { id } = req.params;
+  
+  try {
+    // find the note in the database with the given id
+    const note = await MyModel.findById(id);
 
+    // update the note with the new title and content
+    note.title = title;
+    note.content = content;
+    await note.save();
+    
+    res.redirect('/devices');
+  } catch (err) {
+    console.log(err);
+    res.redirect('/');
+  }
+});
 
 
 
