@@ -4,11 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Notes App</title>
+    <title>NotesApp</title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-        integrity="sha512-9fRy+7rFSrwygGm7qD+v0IKQ/7OuKTgzLtgN7yD9Xv0/ZbDKFgYdQMpjZ5z5GwGPcBMYf+Nh68Unm+xW8XVCvg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -34,7 +31,7 @@
 
         button {
             margin-top: 25px;
-            background-color:#000000;
+            background-color: #000000;
             color: #fff;
             border: none;
             padding: 10px 20px;
@@ -103,7 +100,7 @@
             font-family: 'Libre Baskerville', serif;
             font-size: 45px;
             margin-top: 35px;
-            color: rgb(255, 255, 255);
+            color: rgb(0, 0, 0);
         }
 
         form {
@@ -159,113 +156,178 @@
         <div class="row">
             <div class="col-md-12">
                 <h1 class="title"><u><i>NotesApp</i></u></h1>
-                <button type="button" onclick="openCreateNoteModal()">Create Note</button>
-                <div class="row mt-4">
-                    <% if (devices.length) { %>
-                        <% devices.forEach(function(device) { %>
-                            <div class="col-md-6 mb-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <p class="card-text text-right">
-                                            <%= new Date(device.created_at).toLocaleString() %>
-                                        </p>
-                                        <h5 class="card-title"><u>
-                                                <%= device.title %>
-                                            </u></h5>
-                                        <p class="card-text">
-                                            <%= device.text %>
-                                        </p>
-                                        <hr>
-                                        <a href="/notes/<%=device._id%>/update" class="btn float-right"
-                                            data-note-id="<%= device._id %>">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="black"
-                                                class="bi bi-pencil" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M10.293 2.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414l-8.293 8.293a1 1 0 0 1-.554.292H3a1 1 0 0 1-1-1v-2.94a1 1 0 0 1 .293-.656l8.293-8.293zM11 3l-1-1h3a1 1 0 0 1 1 1v3l-1-1V3zm-9.5 9.5a1.5 1.5 0 0 0 2.121 2.121l2.5-2.5a1.5 1.5 0 0 0 0-2.121l-2.5-2.5A1.5 1.5 0 0 0 1.5 8.5v4z" />
-                                            </svg>
-                                            <p>Update</p>
-                                        </a>
-                                        <a href="#" class="btn float-right delete-btn" data-note-id="<%= device._id %>">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="black"
-                                                class="bi bi-trash" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
-                                                <path
-                                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
-                                            </svg>
-                                            <p>Delete</p>
-                                        </a>
-                                    </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <button type="button" onclick="openCreateNoteModal()">Create Note</button>
+
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search..."
+                            style="margin-bottom: 2px;margin-top: 30px;">
+                        <button type="button" onclick="searchNotes()" style="margin-top: 10px;">Search</button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row mt-4">
+                <% if (devices.length) { %>
+                    <% devices.forEach(function(device) { %>
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="card-text text-right">
+                                        <%= new Date(device.created_at).toLocaleString() %>
+                                    </p>
+                                    <h5 class="card-title"><u>
+                                            <%= device.title %>
+                                        </u></h5>
+                                    <p class="card-text">
+                                        <%= device.text %>
+                                    </p>
+                                    <hr>
+                                    <a href="/notes/<%=device._id%>/update" class="btn float-right"
+                                        data-note-id="<%= device._id %>">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="black"
+                                            class="bi bi-pencil" viewBox="0 0 16 16">
+                                            <path
+                                                d="M10.293 2.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414l-8.293 8.293a1 1 0 0 1-.554.292H3a1 1 0 0 1-1-1v-2.94a1 1 0 0 1 .293-.656l8.293-8.293zM11 3l-1-1h3a1 1 0 0 1 1 1v3l-1-1V3zm-9.5 9.5a1.5 1.5 0 0 0 2.121 2.121l2.5-2.5a1.5 1.5 0 0 0 0-2.121l-2.5-2.5A1.5 1.5 0 0 0 1.5 8.5v4z" />
+                                        </svg>
+                                        <p>Update</p>
+                                    </a>
+                                    <a href="#" class="btn float-right delete-btn" data-note-id="<%= device._id %>">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="black"
+                                            class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path
+                                                d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                            <path
+                                                d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                                        </svg>
+                                        <p>Delete</p>
+                                    </a>
+                                    <a href="#" class="btn float-right download-btn"
+                                        onclick="downloadCard('<%= device._id %>')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="black"
+                                            class="bi bi-download" viewBox="0 0 16 16">
+                                            <path
+                                                d="M0 8a.5.5 0 0 1 .5-.5h14a.5.5 0 0 1 0 1h-14A.5.5 0 0 1 0 8Zm8.146-3.354a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 6.707V14.5a.5.5 0 0 1-1 0V6.707L5.854 7.854a.5.5 0 1 1-.708-.708l3-3Z" />
+                                            <path d="M5 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5Z" />
+                                        </svg>
+                                        <p>Download</p>
+                                    </a>
                                 </div>
                             </div>
-                            <% }); %>
-                                <% } else { %>
-                                    <p>No notes found</p>
-                                    <% } %>
+                        </div>
+                        <% }); %>
+                            <% } else { %>
+                                <p>No notes found</p>
+                                <% } %>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="createNoteModal" tabindex="-1" role="dialog" aria-labelledby="createNoteModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createNoteModalLabel">Create Note</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/notes" method="POST">
+                        <label for="title">Title:</label>
+                        <input type="text" id="title" name="title"><br><br>
+                        <label for="text">Text:</label>
+                        <textarea id="text" name="text" rows="8" required="true"></textarea><br><br>
+                        <button type="submit" class="btn btn-primary">Create Note</button>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
 
+    <script>
+        function openCreateNoteModal() {
+            $('#createNoteModal').modal('show');
+        }
+        function searchNotes() {
+            const searchInput = document.getElementById('searchInput').value;
+            const cards = document.getElementsByClassName('card');
 
+            Array.from(cards).forEach(card => {
+                const cardTitle = card.querySelector('.card-title').textContent;
+                const cardText = card.querySelector('.card-text').textContent;
 
-        <!-- Modal -->
-        <!-- Modal -->
-        <div class="modal fade" id="createNoteModal" tabindex="-1" role="dialog" aria-labelledby="createNoteModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="createNoteModalLabel">Create Note</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="/notes" method="POST">
-                            <label for="title">Title:</label>
-                            <input type="text" id="title" name="title"><br><br>
-                            <label for="text">Text:</label>
-                            <textarea id="text" name="text" rows="8" required="true"></textarea><br><br>
-                            <button type="submit" class="btn btn-primary">Create Note</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <script>
-            function openCreateNoteModal() {
-                $('#createNoteModal').modal('show');
-            }
-
-        </script>
-
-        <script>
-            const deleteBtns = document.querySelectorAll('.delete-btn');
-            deleteBtns.forEach(btn => {
-                btn.addEventListener('click', (event) => {
-                    event.preventDefault();
-                    const noteId = event.currentTarget.getAttribute('data-note-id');
-                    fetch(`/notes/${noteId}`, {
-                        method: 'DELETE'
-                    })
-                        .then(response => {
-                            if (response.ok) {
-                                // Remove the note from the page
-                                const noteElement = event.currentTarget.closest('.card');
-                                noteElement.remove();
-
-                                // Alternatively, hide the note using CSS:
-                                // noteElement.style.display = 'none';
-                            }
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                });
+                if (cardTitle.includes(searchInput) || cardText.includes(searchInput)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
             });
+        }
+    </script>
 
-        </script>
+    <script>
+        const deleteBtns = document.querySelectorAll('.delete-btn');
+        deleteBtns.forEach(btn => {
+            btn.addEventListener('click', (event) => {
+                event.preventDefault();
+                const noteId = event.currentTarget.getAttribute('data-note-id');
+                fetch(`/notes/${noteId}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            // Remove the note from the page
+                            const noteElement = event.currentTarget.closest('.card');
+                            noteElement.remove();
+
+                            // Alternatively, hide the note using CSS:
+                            // noteElement.style.display = 'none';
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            });
+        });
+
+        function downloadCard(noteId) {
+            fetch(`/notes/${noteId}`)
+                .then(response => response.blob())
+                .then(blob => {
+                    // Create a temporary anchor element
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+
+                    // Set the filename for the downloaded file
+                    const fileName = `note.txt`;
+                    link.setAttribute('download', fileName); // Use setAttribute instead of link.download
+
+
+
+                    // Simulate a click on the anchor element to trigger the download
+                    link.dispatchEvent(
+                        new MouseEvent('click', {
+                            bubbles: true,
+                            cancelable: true,
+                            view: window
+                        })
+                    );
+
+                    // Cleanup by revoking the object URL
+                    URL.revokeObjectURL(link.href);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+
+    </script>
 </body>
 
 

@@ -19,6 +19,9 @@ const moment = require("moment");
 
 const router = express.Router();
 
+const { ObjectId } = require('mongodb');
+
+const fs = require('fs');
 
 app.set('view engine', 'ejs');
 
@@ -228,6 +231,47 @@ app.put('/notes/:id', async (req, res) => {
     console.log(err);
     res.redirect('/');
   }
+});
+
+
+app.get('/notes/:noteId', (req, res) => {
+  const noteId = req.params.noteId;
+  console.log(noteId);
+  db.collection('notes')
+    .findOne({ _id: new ObjectId(noteId) })
+    .then((note) => {
+      if (!note) {
+        return res.status(404).json({ error: 'Note not found' });
+      }
+      const { title, text } = note;
+      const content = `Title: ${title}\n\n${text}`;
+      // Generate a unique filename
+      const filename = `note_${noteId}.txt`;
+      // Write the file to the server's filesystem
+      fs.writeFile(filename, content, (err) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({ error: 'Internal server error' });
+        }
+        // Send the file as a response
+        res.download(filename, (err) => {
+          if (err) {
+            console.log(err);
+            return res.status(500).json({ error: 'Internal server error' });
+          }
+          // Remove the file from the server's filesystem
+          fs.unlink(filename, (err) => {
+            if (err) {
+              console.log(err);
+            }
+          });
+        });
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ error: 'Internal server error' });
+    });
 });
 
 
